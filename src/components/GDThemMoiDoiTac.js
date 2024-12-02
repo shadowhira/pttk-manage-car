@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -12,24 +12,29 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
-import { getFromSession, saveToSession } from "../services/session";
-import { updateDoiTac } from "../services/fetchAPI";
+import { useNavigate } from "react-router-dom";
+import { saveToSession } from "../services/session";
+import { createDoiTac } from "../services/fetchAPI"; // Đổi thành API thêm mới
 import { toast } from "react-toastify";
 
-const GDSuaTTDoiTac = () => {
-  const doiTacData = getFromSession("doiTac");
-  const { id } = useParams();
+const GDThemMoiDoiTac = () => {
   const navigate = useNavigate();
-  const [doiTac, setDoiTac] = useState(doiTacData || {});
-  const [diaChis, setDiaChis] = useState(doiTacData?.ThanhVien?.DiaChi || []);
+  const [doiTac, setDoiTac] = useState({
+    ThanhVien: {
+      ten: "",
+      soDienThoai: "",
+      email: "",
+    },
+    soCMND: "",
+    soTaiKhoan: "",
+    tenNganHang: "",
+  });
+  const [diaChis, setDiaChis] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Kiểm tra nếu trường thuộc về ThanhVien
     if (name in doiTac.ThanhVien) {
-      // Cập nhật trường trong ThanhVien
       setDoiTac((prev) => ({
         ...prev,
         ThanhVien: {
@@ -38,7 +43,6 @@ const GDSuaTTDoiTac = () => {
         },
       }));
     } else {
-      // Cập nhật các trường ngoài ThanhVien (soCMND, soTaiKhoan, tenNganHang)
       setDoiTac((prev) => ({
         ...prev,
         [name]: value,
@@ -52,18 +56,22 @@ const GDSuaTTDoiTac = () => {
     setDiaChis(updatedAddresses);
   };
 
+  const handleAddAddress = () => {
+    setDiaChis([
+      ...diaChis,
+      { soNha: "", thonXom: "", quanHuyen: "", tinhThanhPho: "" },
+    ]);
+  };
+
   const handleSubmit = async () => {
     try {
-      const updatedDoiTac = {
-        ...doiTac,
-        diaChis,
-      };
-      await updateDoiTac(id, updatedDoiTac);
-      toast.success("Cập nhật thông tin đối tác thành công!");
-      saveToSession("doiTac", updatedDoiTac);
-      navigate("/GDQLTTDoiTac");
+      const newDoiTac = { ...doiTac, diaChis };
+      await createDoiTac(newDoiTac); 
+      toast.success("Thêm mới đối tác thành công!");
+      saveToSession("doiTac", newDoiTac);
+      navigate("/GDThemMoiHopDong");
     } catch (error) {
-      toast.error("Cập nhật thông tin thất bại.");
+      toast.error("Thêm mới đối tác thất bại.");
     }
   };
 
@@ -80,14 +88,14 @@ const GDSuaTTDoiTac = () => {
       }}
     >
       <Typography variant="h5" component="h1" sx={{ mb: 3 }}>
-        Sửa thông tin đối tác
+        Thêm mới đối tác
       </Typography>
 
       <TextField
         fullWidth
         label="Tên đối tác"
         name="ten"
-        value={doiTac?.ThanhVien?.ten || ""}
+        value={doiTac.ThanhVien.ten}
         onChange={handleChange}
         sx={{ mb: 2 }}
       />
@@ -95,7 +103,7 @@ const GDSuaTTDoiTac = () => {
         fullWidth
         label="Số CMND"
         name="soCMND"
-        value={doiTac.soCMND || ""}
+        value={doiTac.soCMND}
         onChange={handleChange}
         sx={{ mb: 2 }}
       />
@@ -103,15 +111,15 @@ const GDSuaTTDoiTac = () => {
         fullWidth
         label="SĐT"
         name="soDienThoai"
-        value={doiTac?.ThanhVien?.soDienThoai || ""}
+        value={doiTac.ThanhVien.soDienThoai}
         onChange={handleChange}
         sx={{ mb: 2 }}
       />
       <TextField
         fullWidth
-        label="email"
+        label="Email"
         name="email"
-        value={doiTac?.ThanhVien?.email || ""}
+        value={doiTac.ThanhVien.email}
         onChange={handleChange}
         sx={{ mb: 2 }}
       />
@@ -119,7 +127,7 @@ const GDSuaTTDoiTac = () => {
         fullWidth
         label="Số tài khoản"
         name="soTaiKhoan"
-        value={doiTac.soTaiKhoan || ""}
+        value={doiTac.soTaiKhoan}
         onChange={handleChange}
         sx={{ mb: 2 }}
       />
@@ -127,7 +135,7 @@ const GDSuaTTDoiTac = () => {
         fullWidth
         label="Tên ngân hàng"
         name="tenNganHang"
-        value={doiTac.tenNganHang || ""}
+        value={doiTac.tenNganHang}
         onChange={handleChange}
         sx={{ mb: 2 }}
       />
@@ -185,6 +193,9 @@ const GDSuaTTDoiTac = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Button variant="text" onClick={handleAddAddress} sx={{ mt: 2 }}>
+        Thêm địa chỉ
+      </Button>
 
       <Box
         sx={{
@@ -197,16 +208,16 @@ const GDSuaTTDoiTac = () => {
         <Button
           variant="outlined"
           color="secondary"
-          onClick={() => navigate("/GDQLTTDoiTac")}
+          onClick={() => navigate("/GDThemMoiHopDong")}
         >
           Đóng
         </Button>
         <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Lưu
+          Thêm mới
         </Button>
       </Box>
     </Box>
   );
 };
 
-export default GDSuaTTDoiTac;
+export default GDThemMoiDoiTac;

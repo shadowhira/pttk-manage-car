@@ -2,8 +2,9 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import GDDangNhap from "../components/GDDangNhap";
 import GDQuanLy from "../components/GDQuanLy";
-import GDQLTTDoiTac from "../components/GDQLTTDoiTac";
-import GDSuaTTDoiTac from "../components/GDSuaTTDoiTac";
+import GDThemMoiHopDong from "../components/GDThemMoiHopDong";
+import GDThemMoiDoiTac from "../components/GDThemMoiDoiTac";
+import GDTaoHopDong from "../components/GDTaoHopDong";
 
 const AppRoutes = () => (
   <BrowserRouter>
@@ -11,8 +12,9 @@ const AppRoutes = () => (
       <Route path="/" element={<Navigate to="/GDDangNhap" />} />
       <Route path="/GDDangNhap" element={<GDDangNhap />} />
       <Route path="/GDQuanLy" element={<GDQuanLy />} />
-      <Route path="/GDQLTTDoiTac" element={<GDQLTTDoiTac />} />
-      <Route path="/GDSuaTTDoiTac/:id" element={<GDSuaTTDoiTac />} />
+      <Route path="/GDThemMoiHopDong" element={<GDThemMoiHopDong />} />
+      <Route path="/GDTaoHopDong" element={<GDTaoHopDong />} />
+      <Route path="/GDThemMoiDoiTac" element={<GDThemMoiDoiTac />} />
     </Routes>
   </BrowserRouter>
 );

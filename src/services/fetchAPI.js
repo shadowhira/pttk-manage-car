@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:5000";
+const baseURL = "http://localhost:2001";
 
 export const kiemTraDangNhap = async (username, password) => {
   const response = await fetch(`${baseURL}/thanhvien/kiemTraDangNhap`, {
@@ -41,12 +41,40 @@ export const updateDoiTac = async (id, data) => {
   return response.json();
 };
 
+export const createDoiTac = async (data) => {
+  const response = await fetch(`${baseURL}/doiTac`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json();
+};
+
 export const getDoiTac = async (id) => {
   const response = await fetch(`${baseURL}/doiTac/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json();
+};
+
+export const createHopDong = async (data) => {
+  const response = await fetch(`${baseURL}/hopDong`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   });
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);

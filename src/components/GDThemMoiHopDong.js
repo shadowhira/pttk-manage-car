@@ -37,7 +37,7 @@ const GDQLTTDoiTac = () => {
     try {
       const doiTac = await getDoiTac(id);
       saveToSession("doiTac", doiTac.doiTac);
-      navigate(`/GDSuaTTDoiTac/${id}`);
+      navigate(`/GDTaoHopDong`);
     } catch (error) {
       toast.error("Không thể tải thông tin đối tác");
     }
@@ -74,7 +74,7 @@ const GDQLTTDoiTac = () => {
 
         <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
           <TextField
-            fullWidth
+            // fullWidth
             variant="outlined"
             label="Tìm kiếm đối tác"
             value={searchTerm}
@@ -88,6 +88,14 @@ const GDQLTTDoiTac = () => {
           >
             Tìm kiếm
           </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ width: "200px", fontSize: "16px", py: 1.5 }}
+            onClick={() => navigate("/GDThemMoiDoiTac")}
+          >
+            Thêm mới đối tác
+          </Button>
         </Box>
         <TableContainer component={Paper}>
           <Table>
@@ -96,11 +104,6 @@ const GDQLTTDoiTac = () => {
                 <TableCell>STT</TableCell>
                 <TableCell>Tên đối tác</TableCell>
                 <TableCell>Số CMND</TableCell>
-                <TableCell>SĐT</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Số tài khoản</TableCell>
-                <TableCell>Tên ngân hàng</TableCell>
-                <TableCell>Địa chỉ</TableCell>
                 <TableCell>Thao tác</TableCell>
               </TableRow>
             </TableHead>
@@ -110,25 +113,13 @@ const GDQLTTDoiTac = () => {
                   <TableCell>{stt + 1}</TableCell>
                   <TableCell>{doiTac.ThanhVien?.ten}</TableCell>
                   <TableCell>{doiTac.soCMND}</TableCell>
-                  <TableCell>{doiTac.ThanhVien?.soDienThoai}</TableCell>
-                  <TableCell>{doiTac.ThanhVien?.email}</TableCell>
-                  <TableCell>{doiTac.soTaiKhoan}</TableCell>
-                  <TableCell>{doiTac.tenNganHang}</TableCell>
-                  <TableCell>
-                    {doiTac.ThanhVien?.DiaChi?.map((diaChi, i) => (
-                      <div key={i}>
-                        Địa chỉ {i + 1}: {diaChi.thonXom}, {diaChi.quanHuyen},{" "}
-                        {diaChi.tinhThanhPho}
-                      </div>
-                    ))}
-                  </TableCell>
                   <TableCell>
                     <Button
                       variant="contained"
                       color="secondary"
                       onClick={() => handleEdit(doiTac.maDoiTac)}
                     >
-                      Sửa
+                      Thêm hợp đồng
                     </Button>
                   </TableCell>
                 </TableRow>

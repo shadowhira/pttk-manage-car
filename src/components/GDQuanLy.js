@@ -25,10 +25,10 @@ const GDQuanLy = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => navigate("/GDQLTTDoiTac")}
+        onClick={() => navigate("/GDThemMoiHopDong")}
         sx={{ width: "300px", fontSize: "16px", py: 1.5 }}
       >
-        Quản lý thông tin đối tác
+        Thêm mới hợp đồng
       </Button>
     </Box>
   );
