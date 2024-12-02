@@ -18,10 +18,8 @@ router.get("/findDoiTacByName", async (req, res) => {
     const result = await doiTacDAO.findDoiTacByName(name);
 
     if (result && result.length > 0) {
-      // Nếu tìm thấy đối tác
       res.status(200).json({ success: true, doiTacs: result });
     } else {
-      // Nếu không tìm thấy đối tác
       res.status(404).json({
         success: false,
         message: "Không tìm thấy đối tác với tên này",
@@ -44,14 +42,11 @@ router.get("/:id", async (req, res) => {
       });
     }
 
-    // Lấy thông tin đối tác theo ID
     const result = await doiTacDAO.getDoiTac(id);
 
     if (result) {
-      // Nếu tìm thấy đối tác
       res.status(200).json({ success: true, doiTac: result });
     } else {
-      // Nếu không tìm thấy đối tác
       res.status(404).json({
         success: false,
         message: "Không tìm thấy đối tác với ID này",
