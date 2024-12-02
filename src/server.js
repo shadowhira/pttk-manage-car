@@ -1,8 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const Router = require("./router/index");
+const { initializeDatabase } = require("./model/db-init");
 
 const cors = require("cors");
+
+(async () => {
+  try {
+    await initializeDatabase();
+    console.log("Đồng bộ thành công!");
+  } catch (err) {
+    console.error("Lỗi đồng bộ:", err);
+  }
+})();
 
 const app = express();
 app.use(bodyParser.json());

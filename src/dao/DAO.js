@@ -1,37 +1,28 @@
-const mysql = require("mysql2");
-
+const { Sequelize } = require("sequelize");
 class DAO {
-  static connection = null;
+  static sequelize = null;
 
   constructor() {
-    if (!DAO.connection) {
-      // Tạo pool kết nối
-      DAO.connection = mysql
-        .createPool({
-          host: "localhost",
-          user: "root",
-          password: "G@con123",
-          database: "pttk-car",
-          waitForConnections: true,
-          connectionLimit: 10,
-          queueLimit: 0,
-        })
-        .promise();
+    if (!DAO.sequelize) {
+      DAO.sequelize = new Sequelize("pttk-car", "root", "G@con123", {
+        host: "localhost",
+        dialect: "mysql",
+        logging: false,
+      });
 
-      // Log thông báo khi kết nối pool được tạo thành công
-      DAO.connection.getConnection()
+      DAO.sequelize
+        .authenticate()
         .then(() => {
-          console.log("Kết nối đến MySQL thành công.");
+          console.log("Kết nối đến MySQL thành công qua Sequelize.");
         })
         .catch((err) => {
-          console.error("Lỗi khi kết nối tới MySQL:", err);
+          console.error("Lỗi khi kết nối tới MySQL qua Sequelize:", err);
         });
     }
   }
 
-  // Hàm trả về kết nối pool
-  getConnection() {
-    return DAO.connection;
+  getSequelize() {
+    return DAO.sequelize;
   }
 }
 
