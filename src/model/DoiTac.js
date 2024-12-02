@@ -1,9 +1,7 @@
 const { DataTypes } = require("sequelize");
-const DAO = require("../dao/DAO");
-const ThanhVien = require("./ThanhVien");
-
-const dao = new DAO();
-const sequelize = dao.getSequelize();
+const { sequelize } = require("../config/database");
+const HopDong = require("./HopDong");
+const XeOTo = require("./XeOTo");
 
 const DoiTac = sequelize.define(
   "DoiTac",
@@ -26,15 +24,7 @@ const DoiTac = sequelize.define(
     tenNganHang: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    maThanhVien: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: ThanhVien,
-        key: "maThanhVien",
-      },
-    },
+    }
   },
   {
     tableName: "DoiTac",
@@ -42,8 +32,10 @@ const DoiTac = sequelize.define(
   }
 );
 
-// Quan hệ DoiTac - ThanhVien (1-1)
-ThanhVien.hasOne(DoiTac, { foreignKey: "maThanhVien" });
-DoiTac.belongsTo(ThanhVien, { foreignKey: "maThanhVien" });
+DoiTac.hasMany(XeOTo, { foreignKey: "maDoiTac" });
+XeOTo.belongsTo(DoiTac, { foreignKey: "maDoiTac" });
+
+DoiTac.hasMany(HopDong, { foreignKey: "maDoiTac" });
+HopDong.belongsTo(DoiTac, { foreignKey: "maDoiTac" });
 
 module.exports = DoiTac;

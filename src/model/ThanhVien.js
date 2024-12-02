@@ -1,9 +1,7 @@
 const { DataTypes } = require("sequelize");
-const DAO = require("../dao/DAO");
+const { sequelize } = require("../config/database");
 const DiaChi = require("./DiaChi");
-
-const dao = new DAO();
-const sequelize = dao.getSequelize();
+const DoiTac = require("./DoiTac");
 
 const ThanhVien = sequelize.define(
   "ThanhVien",
@@ -43,8 +41,10 @@ const ThanhVien = sequelize.define(
   }
 );
 
-// Quan hệ ThanhVien - DiaChi (1-n)
 ThanhVien.hasMany(DiaChi, { foreignKey: "maThanhVien", as: "DiaChi" });
 DiaChi.belongsTo(ThanhVien, { foreignKey: "maThanhVien", as: "ThanhVien" });
+
+ThanhVien.hasOne(DoiTac, { foreignKey: "maThanhVien" });
+DoiTac.belongsTo(ThanhVien, { foreignKey: "maThanhVien" });
 
 module.exports = ThanhVien;

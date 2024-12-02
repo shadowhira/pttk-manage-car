@@ -1,9 +1,7 @@
 const { DataTypes } = require("sequelize");
-const DAO = require("../dao/DAO");
+const { sequelize } = require("../config/database");
 const NhanVien = require("./NhanVien");
-
-const dao = new DAO();
-const sequelize = dao.getSequelize();
+const HopDong = require("./HopDong");
 
 const NVQLDoiTac = sequelize.define(
   "NVQLDoiTac",
@@ -30,5 +28,8 @@ const NVQLDoiTac = sequelize.define(
 
 NhanVien.hasOne(NVQLDoiTac, { foreignKey: "maThanhVien" });
 NVQLDoiTac.belongsTo(NhanVien, { foreignKey: "maThanhVien" });
+
+NVQLDoiTac.hasMany(HopDong, { foreignKey: "maNVQLDoiTac" });
+HopDong.belongsTo(NVQLDoiTac, { foreignKey: "maNVQLDoiTac" });
 
 module.exports = NVQLDoiTac;

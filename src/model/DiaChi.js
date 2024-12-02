@@ -1,8 +1,5 @@
 const { DataTypes } = require("sequelize");
-const DAO = require("../dao/DAO");
-
-const dao = new DAO();
-const sequelize = dao.getSequelize();
+const { sequelize } = require("../config/database");
 
 const DiaChi = sequelize.define(
   "DiaChi",

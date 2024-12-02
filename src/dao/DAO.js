@@ -4,7 +4,7 @@ class DAO {
 
   constructor() {
     if (!DAO.sequelize) {
-      DAO.sequelize = new Sequelize("pttk-car", "root", "G@con123", {
+      DAO.sequelize = new Sequelize("pttk-car-2", "root", "G@con123", {
         host: "localhost",
         dialect: "mysql",
         logging: false,

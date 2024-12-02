@@ -1,9 +1,6 @@
 const { DataTypes } = require("sequelize");
-const DAO = require("../dao/DAO");
+const { sequelize } = require("../config/database");
 const ThanhVien = require("./ThanhVien");
-
-const dao = new DAO();
-const sequelize = dao.getSequelize();
 
 const NhanVien = sequelize.define(
   "NhanVien",
