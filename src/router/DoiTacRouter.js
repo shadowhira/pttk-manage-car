@@ -58,62 +58,13 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
-  const { id } = req.params;
-  const { soCMND, soTaiKhoan, tenNganHang, ThanhVien } = req.body;
-
+router.post("/", async (req, res) => {
   try {
-    if (!id) {
-      return res.status(400).json({
-        success: false,
-        message: "ID đối tác không được để trống",
-      });
-    }
-
-    // Kiểm tra nếu các trường cần thiết không được truyền vào
-    if (!soCMND || !soTaiKhoan || !tenNganHang) {
-      return res.status(400).json({
-        success: false,
-        message: "Cần truyền đầy đủ thông tin cập nhật cho đối tác",
-      });
-    }
-
-    // Kiểm tra thông tin của ThanhVien nếu có
-    if (ThanhVien) {
-      const { ten, soDienThoai, email } = ThanhVien;
-      if (!ten || !soDienThoai || !email) {
-        return res.status(400).json({
-          success: false,
-          message: "Cần truyền đầy đủ thông tin cập nhật cho ThanhVien",
-        });
-      }
-    }
-
-    // Cập nhật thông tin đối tác
-    const updatedDoiTac = await doiTacDAO.updateDoiTac(id, {
-      soCMND,
-      soTaiKhoan,
-      tenNganHang,
-      ThanhVien, // Gửi dữ liệu về thông tin ThanhVien nếu có
-    });
-
-    if (updatedDoiTac) {
-      // Nếu cập nhật thành công
-      res.status(200).json({
-        success: true,
-        message: "Cập nhật đối tác thành công",
-        doiTac: updatedDoiTac,
-      });
-    } else {
-      // Nếu không có đối tác nào được cập nhật
-      res.status(404).json({
-        success: false,
-        message: "Không tìm thấy đối tác với ID này để cập nhật",
-      });
-    }
+    const doiTac = await doiTacDAO.createDoiTac(req.body);
+    res.status(201).json(doiTac);
   } catch (error) {
-    console.error("Error in updateDoiTac:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    console.error("Lỗi trong POST /doiTac:", error);
+    res.status(500).json({ message: "Lỗi khi tạo đối tác", error: error.message });
   }
 });
 

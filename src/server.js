@@ -21,13 +21,13 @@ app.use(cors());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:2000",
   })
 );
 
 app.use("/", Router);
 
-const PORT = 5000;
+const PORT = 2001;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

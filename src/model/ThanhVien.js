@@ -18,11 +18,11 @@ const ThanhVien = sequelize.define(
     taiKhoan: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: false,
+      allowNull: true,
     },
     matKhau: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     soDienThoai: {
       type: DataTypes.STRING,

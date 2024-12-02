@@ -26,7 +26,7 @@ class DoiTacDAO {
           },
         },
       });
-
+      
       if (doiTacs.length === 0) {
         return null;
       }
@@ -37,6 +37,39 @@ class DoiTacDAO {
       return null;
     }
   }
+
+  async createDoiTac(data) {
+    const { ThanhVien: thanhVienData, diaChis, ...doiTacInfo } = data;
+    console.log('data: ', data);
+  
+    try {
+      const doiTac = await DoiTac.create(doiTacInfo);
+      console.log('doiTac: ', doiTac);
+  
+      if (thanhVienData) {
+        const thanhVien = await ThanhVien.create({
+          ...thanhVienData,
+          maDoiTac: doiTac.maDoiTac,
+        });
+        console.log('thanhVien: ', thanhVien);
+  
+        if (diaChis && Array.isArray(diaChis)) {
+          for (const diaChi of diaChis) {
+            console.log('diaChi: ', diaChi);
+            await DiaChi.create({
+              ...diaChi,
+              maThanhVien: thanhVien.maThanhVien,
+            });
+          }
+        }
+      }
+  
+      return doiTac.toJSON();
+    } catch (error) {
+      console.error("Lỗi trong createDoiTac:", error);
+      throw new Error("Không thể tạo mới đối tác");
+    }
+  }  
 
   async getDoiTac(maDoiTac) {
     try {
@@ -77,71 +110,6 @@ class DoiTacDAO {
       return doiTac.toJSON();
     } catch (error) {
       console.error("Lỗi trong getDoiTac:", error);
-      return null;
-    }
-  }
-
-  async updateDoiTac(maDoiTac, data) {
-    try {
-      if (!maDoiTac || !data) {
-        throw new Error("Mã đối tác và dữ liệu cập nhật không được để trống");
-      }
-
-      const doiTac = await DoiTac.findOne({
-        where: { maDoiTac },
-        include: [
-          {
-            model: ThanhVien,
-            as: "ThanhVien",
-            required: false,
-            include: [
-              {
-                model: DiaChi,
-                as: "DiaChi",
-                required: false,
-              },
-            ],
-          },
-        ],
-      });
-
-      if (!doiTac) {
-        throw new Error("Không tìm thấy đối tác để cập nhật");
-      }
-
-      await doiTac.update(
-        {
-          soCMND: data.soCMND,
-          soTaiKhoan: data.soTaiKhoan,
-          tenNganHang: data.tenNganHang,
-
-          where: { maDoiTac },
-        },
-        { fields: ["soCMND", "soTaiKhoan", "tenNganHang"] }
-      );
-
-      if (data.ThanhVien) {
-        await doiTac.ThanhVien.update({
-          ten: data.ThanhVien.ten,
-          soDienThoai: data.ThanhVien.soDienThoai,
-          email: data.ThanhVien.email,
-        });
-      }
-
-      for (const diaChi of data.ThanhVien.DiaChi) {
-        if (!diaChi.maDiaChi) continue;
-        const existingDiaChi = await DiaChi.findByPk(diaChi.maDiaChi);
-        await existingDiaChi.update({
-          soNha: diaChi.soNha,
-          thonXom: diaChi.thonXom,
-          quanHuyen: diaChi.quanHuyen,
-          tinhThanhPho: diaChi.tinhThanhPho,
-        });
-      }
-
-      return doiTac.toJSON();
-    } catch (error) {
-      console.error("Lỗi trong updateDoiTac:", error);
       return null;
     }
   }
