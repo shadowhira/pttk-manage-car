@@ -7,11 +7,6 @@ const GDQuanLy = () => {
   const TTQuanLy = getFromSession("TTQuanLy");
   const navigate = useNavigate();
 
-  //   if (!TTQuanLy) {
-  //     navigate('/GDDangNhap');
-  //     return null;
-  //   }
-
   return (
     <Box
       sx={{
@@ -24,7 +19,7 @@ const GDQuanLy = () => {
       }}
     >
       <Typography variant="h4" sx={{ mb: 4 }}>
-        Xin chào, {TTQuanLy.name}
+        Xin chào, {TTQuanLy.ten}
       </Typography>
 
       <Button

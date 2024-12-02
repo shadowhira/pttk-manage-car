@@ -15,7 +15,7 @@ export const kiemTraDangNhap = async (username, password) => {
 };
 
 export const findDoiTacByName = async (name) => {
-  const response = await fetch(`${baseURL}/doiTac?search=${name}`, {
+  const response = await fetch(`${baseURL}/doiTac/findDoiTacByName?search=${name}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -12,7 +12,7 @@ const AppRoutes = () => (
       <Route path="/GDDangNhap" element={<GDDangNhap />} />
       <Route path="/GDQuanLy" element={<GDQuanLy />} />
       <Route path="/GDQLTTDoiTac" element={<GDQLTTDoiTac />} />
-      <Route path="/GDSuaTTDoiTac" element={<GDSuaTTDoiTac />} />
+      <Route path="/GDSuaTTDoiTac/:id" element={<GDSuaTTDoiTac />} />
     </Routes>
   </BrowserRouter>
 );

@@ -5,8 +5,10 @@ import { saveToSession } from "../services/session";
 import { kiemTraDangNhap } from "../services/fetchAPI";
 import { toast } from "react-toastify";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const GDDangNhap = ({ navigate }) => {
+const GDDangNhap = () => {
+  const navigate = useNavigate();
   const initialValues = { username: "", password: "" };
   const validationSchema = Yup.object({
     username: Yup.string().required("Vui lòng nhập tên đăng nhập"),
@@ -16,7 +18,7 @@ const GDDangNhap = ({ navigate }) => {
   const handleSubmit = async (values) => {
     try {
       const response = await kiemTraDangNhap(values.username, values.password);
-      saveToSession("TTQuanLy", response.data);
+      saveToSession("TTQuanLy", response.user);
       toast.success("Đăng nhập thành công!");
       navigate("/GDQuanLy");
     } catch (error) {
